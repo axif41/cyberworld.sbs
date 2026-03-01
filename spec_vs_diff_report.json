@@ -1,0 +1,82 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-03-01T12:03:57.952Z",
+  "summary": "The diff only shows a modification to project_state.json (a metadata/state tracking file), with no actual code changes to frontend/src/hooks/useCyberMentorKnowledge.ts or frontend/src/pages/CyberMentorPage.tsx. None of the requested requirements (REQ-37 through REQ-44) appear to be implemented in the diff.",
+  "missing_requirements": [
+    {
+      "id": "REQ-37",
+      "requirement": "Overhaul the CyberMentor response engine with 7-part structure, 15+ empathetic phrases, first-person language, encouragement, and 10+ random page-load greetings.",
+      "reason": "No changes to useCyberMentorKnowledge.ts or CyberMentorPage.tsx are present in the diff. Only project_state.json was modified.",
+      "evidence": [
+        "frontend/src/hooks/useCyberMentorKnowledge.ts",
+        "frontend/src/pages/CyberMentorPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-38",
+      "requirement": "Implement automatic Hindi/English/Hinglish language detection with a detectLanguage utility function applied before every response generation.",
+      "reason": "No changes to useCyberMentorKnowledge.ts are present in the diff. The detectLanguage function was not added.",
+      "evidence": [
+        "frontend/src/hooks/useCyberMentorKnowledge.ts"
+      ]
+    },
+    {
+      "id": "REQ-39",
+      "requirement": "Implement Deep Research Mode with animated thinking steps and a toggle button in CyberMentorPage UI.",
+      "reason": "No changes to useCyberMentorKnowledge.ts or CyberMentorPage.tsx are present in the diff.",
+      "evidence": [
+        "frontend/src/hooks/useCyberMentorKnowledge.ts",
+        "frontend/src/pages/CyberMentorPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-40",
+      "requirement": "Implement Debug Mode with automatic keyword detection, 5-part debug response structure, and visible Debug Mode badge on assistant message bubble.",
+      "reason": "No changes to useCyberMentorKnowledge.ts or CyberMentorPage.tsx are present in the diff.",
+      "evidence": [
+        "frontend/src/hooks/useCyberMentorKnowledge.ts",
+        "frontend/src/pages/CyberMentorPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-41",
+      "requirement": "Implement Project Generation Mode with keyword detection, 7-part project response structure, and visible Project Generator badge.",
+      "reason": "No changes to useCyberMentorKnowledge.ts or CyberMentorPage.tsx are present in the diff.",
+      "evidence": [
+        "frontend/src/hooks/useCyberMentorKnowledge.ts",
+        "frontend/src/pages/CyberMentorPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-42",
+      "requirement": "Implement PPT Notes Mode with keyword detection, structured bullet-point notes format, and visible PPT Notes Mode badge.",
+      "reason": "No changes to useCyberMentorKnowledge.ts or CyberMentorPage.tsx are present in the diff.",
+      "evidence": [
+        "frontend/src/hooks/useCyberMentorKnowledge.ts",
+        "frontend/src/pages/CyberMentorPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-43",
+      "requirement": "Implement robust conversation memory system with typed message history, last-10-message context, message count indicator, Clear Chat button, sessionStorage persistence, and context indicator.",
+      "reason": "No changes to CyberMentorPage.tsx are present in the diff.",
+      "evidence": [
+        "frontend/src/pages/CyberMentorPage.tsx"
+      ]
+    },
+    {
+      "id": "REQ-44",
+      "requirement": "Massively expand the knowledge base in useCyberMentorKnowledge.ts covering all six domains with encyclopedic depth, 7-part entries, empathetic phrases, keyword arrays, and multi-keyword scoring.",
+      "reason": "No changes to useCyberMentorKnowledge.ts are present in the diff.",
+      "evidence": [
+        "frontend/src/hooks/useCyberMentorKnowledge.ts"
+      ]
+    }
+  ],
+  "hallucinated_features": [],
+  "confidence": 0.95,
+  "changed_files": [
+    "project_state.json"
+  ]
+}

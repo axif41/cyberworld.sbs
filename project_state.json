@@ -1,0 +1,546 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 15,
+  "summary": "CyberWorld (cyberworld.sbs) is an educational platform for students to learn tech courses (Frontend, Backend, Full Stack, Cyber Security, Ethical Hacking, AI Development), featuring an AI mentor (CyberMentor) with real LLM API + web search integration, certificates, student profiles, project posting/appreciation, in-browser coding terminals, PPT-based notes, an admin panel, and saved chats. CyberMentor acts as a teacher+mentor+researcher with short answers first then detailed explanations. CyberMentor backend uses Python FastAPI with a POST /mentor/chat endpoint, JWT auth, streaming responses, deep research mode, Hindi/English language auto-detection, Ollama/local LLM support with fallback API, and a chat memory database schema. Founded by Asif Parwez.",
+  "architectural_notes": [
+    "Project name: CyberWorld, domain: cyberworld.sbs",
+    "Full study environment platform targeting tech students",
+    "Website founder: Asif Parwez — should be credited in footer/about section",
+    "CyberMentor AI should use a Python API backend for fast, intelligent responses",
+    "Terminals should be context-aware: show only the relevant terminal per course (Python for Python course, C for C course, HTML for HTML course)",
+    "CyberMentor must integrate a real LLM API (e.g., OpenAI/Gemini) plus a Web Search API — not just a static knowledge base",
+    "Backend: Python FastAPI preferred; Database: MongoDB or PostgreSQL",
+    "CyberMentor API: POST /mentor/chat (input: user_message, chat_history, language; output: AI response with streaming)",
+    "CyberMentor supports Hindi/English auto-detection and mixed language responses",
+    "CyberMentor supports Ollama/local LLM with fallback to cloud API (OpenAI/Gemini)"
+  ],
+  "known_issues": [
+    "Domain incorrectly shown as cyberworld.edu — must be cyberworld.sbs",
+    "Site performance is slow — needs optimization",
+    "CyberMentor has limited knowledge — needs full Python API integration (ChatGPT/Gemini/Perplexity-style)",
+    "CyberMentor AI not returning any responses — needs real AI API connection (ChatGPT/Gemini/Perplexity) to answer all questions"
+  ],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-apply-a-dark-cyberpunk-inspired-visual-theme-across-the-entire-app-deep-dark-backgrounds-0a0a0f-0d1117-neon-accent-colors-electric-green-00ff88-cyan-00d4ff-futuristic-typography-monospace-tech-fonts-glowing-borders-and-card-effects-animated-grid-or-matrix-style-background-elements-and-consistent-neon-hover-states-this-theme-must-be-enforced-on-every-page-and-component",
+      "title": "Apply a dark cyberpunk-inspired visual theme across the entire app: deep dark backgrounds (#0a0a0f, #0d1117), neon accent colors (electric green #00ff88, cyan #00d4ff), futuristic typography (monospace/tech fonts), glowing borders and card effects, animated grid or matrix-style background elements, and consistent neon hover states. This theme must be enforced on every page and component.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-student-registration-and-login-system-students-can-sign-up-with-a-username-email-display-name-bio-and-chosen-course-track-each-student-has-a-profile-page-showing-their-name-bio-enrolled-course-completed-modules-posted-projects-and-earned-certificates-students-can-view-other-students-public-profiles",
+      "title": "Build a student registration and login system. Students can sign up with a username, email, display name, bio, and chosen course track. Each student has a profile page showing their name, bio, enrolled course, completed modules, posted projects, and earned certificates. Students can view other students' public profiles.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-courses-section-listing-five-tracks-frontend-developer-backend-developer-full-stack-developer-cyber-security-and-ethical-hacking-each-course-has-a-landing-page-describing-the-curriculum-modules-list-and-an-enroll-button-students-can-enroll-in-one-or-more-courses-and-track-their-progress-through-modules",
+      "title": "Create a courses section listing five tracks: Frontend Developer, Backend Developer, Full Stack Developer, Cyber Security, and Ethical Hacking. Each course has a landing page describing the curriculum, modules list, and an 'Enroll' button. Students can enroll in one or more courses and track their progress through modules.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-ppt-slide-style-notes-viewer-for-each-course-module-each-module-has-a-set-of-slides-rendered-as-a-full-screen-slide-deck-like-a-presentation-with-deep-well-researched-content-covering-the-topic-students-can-navigate-slides-with-previous-next-controls-notes-must-be-pre-authored-with-comprehensive-content-for-each-of-the-five-course-tracks",
+      "title": "Implement a PPT/slide-style notes viewer for each course module. Each module has a set of slides rendered as a full-screen slide deck (like a presentation) with deep, well-researched content covering the topic. Students can navigate slides with Previous/Next controls. Notes must be pre-authored with comprehensive content for each of the five course tracks.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-an-in-browser-python-code-editor-and-terminal-for-python-related-modules-the-editor-should-support-syntax-highlighting-and-students-can-write-and-run-python-code-snippets-directly-in-the-browser-using-a-sandboxed-js-based-python-interpreter-e-g-pyodide-via-cdn-output-is-displayed-in-an-adjacent-terminal-panel",
+      "title": "Build an in-browser Python code editor and terminal for Python-related modules. The editor should support syntax highlighting, and students can write and run Python code snippets directly in the browser using a sandboxed JS-based Python interpreter (e.g., Pyodide via CDN). Output is displayed in an adjacent terminal panel.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-an-in-browser-linux-terminal-simulator-for-cyber-security-and-ethical-hacking-modules-the-terminal-should-simulate-common-linux-commands-ls-cd-cat-pwd-echo-mkdir-rm-man-whoami-ifconfig-ping-etc-with-realistic-output-providing-a-sandboxed-cli-learning-environment-entirely-in-the-browser-using-javascript",
+      "title": "Build an in-browser Linux terminal simulator for Cyber Security and Ethical Hacking modules. The terminal should simulate common Linux commands (ls, cd, cat, pwd, echo, mkdir, rm, man, whoami, ifconfig, ping, etc.) with realistic output, providing a sandboxed CLI learning environment entirely in the browser using JavaScript.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-an-ai-mentor-chat-interface-called-cybermentor-students-can-ask-any-question-about-programming-cyber-security-or-their-course-content-the-ai-mentor-responds-with-detailed-well-researched-answers-using-a-built-in-knowledge-base-stored-in-the-backend-motoko-covering-all-five-course-domains-the-chat-ui-should-feel-like-a-modern-ai-chat-assistant-similar-to-chatgpt",
+      "title": "Implement an AI Mentor chat interface called 'CyberMentor'. Students can ask any question about programming, cyber security, or their course content. The AI Mentor responds with detailed, well-researched answers using a built-in knowledge base stored in the backend (Motoko), covering all five course domains. The chat UI should feel like a modern AI chat assistant similar to ChatGPT.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-doubt-clearing-section-where-students-can-post-questions-publicly-other-students-and-the-cybermentor-can-respond-questions-are-stored-in-the-backend-and-displayed-in-a-forum-style-thread-list-students-can-mark-a-question-as-resolved",
+      "title": "Create a Doubt Clearing section where students can post questions publicly. Other students and the CyberMentor can respond. Questions are stored in the backend and displayed in a forum-style thread list. Students can mark a question as resolved.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-project-showcase-section-where-students-can-post-their-projects-each-project-post-includes-a-title-description-tech-stack-tags-and-an-optional-demo-link-other-students-can-appreciate-like-upvote-projects-projects-are-listed-in-a-card-grid-sorted-by-most-appreciated-each-student-s-posted-projects-appear-on-their-profile",
+      "title": "Implement a Project Showcase section where students can post their projects. Each project post includes a title, description, tech stack tags, and an optional demo link. Other students can 'Appreciate' (like/upvote) projects. Projects are listed in a card grid sorted by most appreciated. Each student's posted projects appear on their profile.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-course-completion-certificate-system-when-a-student-completes-all-modules-in-a-course-the-system-automatically-issues-a-cyberworld-certificate-the-certificate-is-displayed-as-a-styled-digital-certificate-card-showing-the-student-s-name-course-name-completion-date-and-a-unique-certificate-id-certificates-are-visible-on-the-student-s-profile-and-on-a-dedicated-my-certificates-page",
+      "title": "Implement a course completion certificate system. When a student completes all modules in a course, the system automatically issues a CyberWorld certificate. The certificate is displayed as a styled digital certificate card showing the student's name, course name, completion date, and a unique certificate ID. Certificates are visible on the student's profile and on a dedicated 'My Certificates' page.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-main-navigation-bar-and-landing-home-page-for-cyberworld-cyberworld-sbs-the-home-page-should-feature-a-hero-section-with-the-cyberworld-logo-and-tagline-featured-course-cards-a-cybermentor-preview-and-links-to-the-project-showcase-and-community-sections-navigation-should-include-home-courses-cybermentor-projects-community-doubts-and-profile",
+      "title": "Build a main navigation bar and landing/home page for CyberWorld (cyberworld.sbs). The home page should feature a hero section with the CyberWorld logo and tagline, featured course cards, a CyberMentor preview, and links to the Project Showcase and Community sections. Navigation should include: Home, Courses, CyberMentor, Projects, Community/Doubts, and Profile.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-save-the-uploaded-cyberworld-logo-green-circular-badge-with-globe-open-book-and-estd-2026-text-as-a-static-asset-at-frontend-public-assets-generated-cyberworld-logo-png-and-display-it-prominently-in-the-navbar-replacing-any-existing-logo-text-and-in-the-homepage-hero-section",
+      "title": "Save the uploaded CyberWorld logo (green circular badge with globe, open book, and 'ESTD 2026' text) as a static asset at frontend/public/assets/generated/cyberworld-logo.png and display it prominently in the Navbar (replacing any existing logo/text) and in the HomePage hero section.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-redesign-the-homepage-background-to-be-visually-advanced-and-impressive-replace-the-current-matrix-rain-canvas-with-a-layered-animated-background-featuring-a-subtle-animated-globe-world-map-svg-floating-tech-particles-soft-gradient-waves-in-light-greens-and-whites-and-depth-layered-geometric-shapes-the-overall-feel-should-be-modern-professional-and-visually-rich-without-being-dark",
+      "title": "Redesign the HomePage background to be visually advanced and impressive: replace the current matrix rain canvas with a layered animated background featuring a subtle animated globe/world map SVG, floating tech particles, soft gradient waves in light greens and whites, and depth-layered geometric shapes. The overall feel should be modern, professional, and visually rich without being dark.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-switch-the-entire-website-color-scheme-from-dark-cyberpunk-black-dark-backgrounds-with-neon-accents-to-a-light-color-scheme-use-white-and-light-gray-backgrounds-ffffff-f4f6f9-deep-green-1a6e2e-and-medium-green-2d9e47-as-primary-brand-colors-derived-from-the-logo-dark-text-1a1a2e-for-readability-and-light-green-accents-4caf50-81c784-update-index-css-tailwind-config-js-and-all-page-component-styles-consistently-remove-dark-background-classes-and-neon-glow-effects-globally",
+      "title": "Switch the entire website color scheme from dark cyberpunk (black/dark backgrounds with neon accents) to a light color scheme. Use white and light gray backgrounds (#ffffff, #f4f6f9), deep green (#1a6e2e) and medium green (#2d9e47) as primary brand colors (derived from the logo), dark text (#1a1a2e) for readability, and light green accents (#4caf50, #81c784). Update index.css, tailwind.config.js, and all page/component styles consistently. Remove dark background classes and neon glow effects globally.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-upgrade-the-cybermentor-ai-chat-interface-cybermentorpage-tsx-to-provide-much-richer-more-detailed-and-structured-responses-expand-the-built-in-knowledge-base-significantly-to-cover-all-five-course-domains-frontend-backend-full-stack-cyber-security-ethical-hacking-with-deep-content-responses-should-be-formatted-with-sections-bullet-points-and-code-examples-where-relevant-implement-a-simulated-streaming-typing-effect-so-responses-appear-progressively-like-chatgpt-add-response-caching-so-repeat-questions-return-instantly",
+      "title": "Upgrade the CyberMentor AI chat interface (CyberMentorPage.tsx) to provide much richer, more detailed, and structured responses. Expand the built-in knowledge base significantly to cover all five course domains (Frontend, Backend, Full Stack, Cyber Security, Ethical Hacking) with deep content. Responses should be formatted with sections, bullet points, and code examples where relevant. Implement a simulated streaming/typing effect so responses appear progressively like ChatGPT. Add response caching so repeat questions return instantly.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-founder-attribution-for-asif-parwez-across-the-website-display-founded-by-asif-parwez-in-the-site-footer-and-add-a-small-founder-credit-line-in-the-homepage-hero-section-or-about-area",
+      "title": "Add founder attribution for Asif Parwez across the website: display 'Founded by Asif Parwez' in the site Footer, and add a small founder credit line in the HomePage hero section or About area.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-cybermentor-ai-response-engine-in-cybermentorpage-tsx-and-usecybermentorknowledge-ts-so-that-every-user-question-reliably-produces-a-detailed-structured-response-the-response-engine-must-use-a-robust-multi-keyword-scoring-algorithm-that-matches-any-naturally-phrased-question-to-the-best-knowledge-base-entry-when-no-match-scores-above-the-threshold-return-a-rich-fallback-response-listing-related-topics-and-3-5-suggested-follow-up-questions-ensure-the-initial-greeting-always-renders-on-page-load-from-a-pool-of-at-least-10-warm-human-like-messages-remove-any-code-paths-or-async-patterns-that-could-result-in-empty-undefined-or-silent-failures-when-processing-a-message",
+      "title": "Fix the CyberMentor AI response engine in CyberMentorPage.tsx and useCyberMentorKnowledge.ts so that every user question reliably produces a detailed, structured response. The response engine must use a robust multi-keyword scoring algorithm that matches any naturally phrased question to the best knowledge base entry. When no match scores above the threshold, return a rich fallback response listing related topics and 3–5 suggested follow-up questions. Ensure the initial greeting always renders on page load from a pool of at least 10 warm, human-like messages. Remove any code paths or async patterns that could result in empty, undefined, or silent failures when processing a message.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-image-attachment-option-to-the-cybermentor-chat-input-area-display-a-paperclip-image-icon-button-next-to-the-send-button-when-clicked-it-opens-a-file-picker-accepting-image-files-jpg-png-gif-webp-the-selected-image-is-shown-as-a-thumbnail-preview-in-the-chat-input-area-before-sending-when-the-message-is-sent-the-image-thumbnail-is-displayed-inline-in-the-user-s-chat-bubble-above-their-text-the-cybermentor-response-should-acknowledge-the-image-was-received-and-respond-to-any-accompanying-text-question-as-usual-since-no-real-image-analysis-is-available-respond-with-i-can-see-you-ve-shared-an-image-i-m-not-able-to-analyze-images-directly-but-feel-free-to-describe-what-you-see-and-i-ll-help-you-with-your-question",
+      "title": "Add an image attachment option to the CyberMentor chat input area. Display a paperclip/image icon button next to the send button. When clicked, it opens a file picker accepting image files (jpg, png, gif, webp). The selected image is shown as a thumbnail preview in the chat input area before sending. When the message is sent, the image thumbnail is displayed inline in the user's chat bubble above their text. The CyberMentor response should acknowledge the image was received and respond to any accompanying text question as usual (since no real image analysis is available, respond with: 'I can see you've shared an image! I'm not able to analyze images directly, but feel free to describe what you see and I'll help you with your question.').",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-microphone-voice-input-option-to-the-cybermentor-chat-input-area-display-a-microphone-icon-button-next-to-the-send-button-when-clicked-it-activates-the-browser-s-web-speech-api-speechrecognition-to-listen-for-the-user-s-spoken-question-while-recording-the-mic-button-shows-an-animated-recording-indicator-pulsing-red-dot-the-transcribed-speech-text-is-populated-into-the-chat-textarea-if-the-browser-does-not-support-speechrecognition-the-mic-button-shows-a-tooltip-voice-input-not-supported-in-this-browser-and-remains-disabled",
+      "title": "Add a microphone/voice input option to the CyberMentor chat input area. Display a microphone icon button next to the send button. When clicked, it activates the browser's Web Speech API (SpeechRecognition) to listen for the user's spoken question. While recording, the mic button shows an animated recording indicator (pulsing red dot). The transcribed speech text is populated into the chat textarea. If the browser does not support SpeechRecognition, the mic button shows a tooltip 'Voice input not supported in this browser' and remains disabled.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Multiple tech courses: Frontend, Backend, Full Stack, Cyber Security, Ethical Hacking",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Course completion certificates issued by CyberWorld",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "AI Mentor chatbot (like ChatGPT/Gemini) for answering student questions with deep research",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Student registration and profile system with ability to view other students' profiles",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Project posting feature where students can share their projects and appreciate others",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "In-browser Python terminal for Python learners",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "In-browser Linux terminal for Cyber Security learners",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "PPT/slide-based notes for all courses with deep research content",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Doubt-clearing section for students",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Use the CyberWorld logo prominently on the website",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Redesign home page background to be more advanced/visually impressive",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Integrate Python API backend for CyberMentor AI to provide fast, ChatGPT-quality responses",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Add founder credit: website founded by Asif Parwez",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Switch website color scheme to light colors instead of dark cyberpunk theme",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "CyberMentor AI should greet users with human-like psychology and personality, not robotic responses",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Fix domain from cyberworld.edu to cyberworld.sbs across the site",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Show context-aware terminals on course pages only (Python terminal for Python, C terminal for C, HTML terminal for HTML) — not everything on home screen",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Home screen should only show CyberMentor; remove other unrelated widgets/terminals from home",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Massively expand the CyberMentor knowledge base in `frontend/src/hooks/useCyberMentorKnowledge.ts` to cover all five course domains (Frontend, Backend, Full Stack, Cyber Security, Ethical Hacking) with encyclopedic depth — covering hundreds of topics including programming languages, frameworks, tools, algorithms, security exploits, networking, Linux, cryptography, web development, databases, DevOps, and more. Responses must always be detailed, structured with headings, bullet points, numbered steps, and inline code/code blocks where relevant. The knowledge base must function entirely client-side (no external API calls), simulating the breadth and quality of a ChatGPT/Gemini-style assistant using pre-authored, richly researched content.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "Redesign the CyberMentor greeting and conversation flow in `frontend/src/hooks/useCyberMentorKnowledge.ts` and `frontend/src/pages/CyberMentorPage.tsx` to feel warm, human, and psychologically engaging — like a friendly mentor, not a robot. The initial greeting must vary randomly from a pool of at least 10 warm, encouraging, personalized messages (e.g., 'Hey there! Great to see you — what are we diving into today?', 'Welcome back, future tech legend! What challenge can I help you crush today?'). Subsequent responses must open with an empathetic acknowledgment of the question before delivering the technical answer (e.g., 'Great question!', 'That's something many students find tricky — let me break it down for you.'). The assistant must use first-person language ('I', 'we'), occasional encouragement ('You're on the right track!'), and contextual follow-up prompts ('Would you like me to go deeper on any part of this?').",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-21",
+      "summary": "Implement intelligent multi-keyword and semantic-style matching in the CyberMentor response engine (`frontend/src/hooks/useCyberMentorKnowledge.ts`) so that questions phrased naturally (e.g., 'how do I make a website', 'explain hacking to me', 'what is a for loop') correctly match the most relevant knowledge base entry. Use a scoring algorithm that counts keyword matches and ranks the best-fit response. When no strong match is found, return a detailed fallback that lists related topics the student can explore and offers 3–5 suggested follow-up questions.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-22",
+      "summary": "CyberMentor: add image attachment option so users can send images with their questions",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-23",
+      "summary": "CyberMentor: add microphone/voice input option so users can ask questions by speaking",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-24",
+      "summary": "Integrate real LLM API (ChatGPT/Gemini/Perplexity-style) into CyberMentor with web search capability — answers should include sources and summaries, searching the internet before responding",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-25",
+      "summary": "Add AI Development as a sixth course track alongside Frontend, Backend, Full Stack, Cyber Security, Ethical Hacking",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-26",
+      "summary": "Add saved chats feature to student dashboard so users can revisit past CyberMentor conversations",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-27",
+      "summary": "Build an admin panel for uploading/managing courses, managing students, and issuing certificates",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-28",
+      "summary": "CyberMentor response behavior: always give short answer first, then detailed explanation, include code examples when needed, act as teacher+mentor+researcher",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-29",
+      "summary": "Use Python FastAPI as backend with MongoDB or PostgreSQL database for the full platform",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-30",
+      "summary": "Massively expand the CyberMentor knowledge base in `frontend/src/hooks/useCyberMentorKnowledge.ts` to cover all five existing course domains (Frontend, Backend, Full Stack, Cyber Security, Ethical Hacking) PLUS an AI Development domain, with encyclopedic depth. Cover hundreds of topics including: HTML/CSS/JS/React/Vue, Node.js/Express/Django/FastAPI, REST/GraphQL APIs, databases (SQL, NoSQL, Redis), DevOps/Docker/CI-CD, algorithms and data structures, networking fundamentals, Linux administration, cryptography, common security exploits (XSS, SQLi, CSRF, buffer overflow), penetration testing tools (Nmap, Metasploit, Burp Suite, Wireshark), Python/JavaScript/TypeScript/C programming, machine learning basics, LLM architecture, and career guidance. Every knowledge entry must include: a short summary answer (2–3 sentences), a detailed structured body (headings, numbered steps, bullet points, inline code and fenced code blocks), and an empathetic opening phrase. The knowledge base must function entirely client-side with no external API calls.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-31",
+      "summary": "Upgrade the CyberMentor response engine in `frontend/src/hooks/useCyberMentorKnowledge.ts` to implement a robust multi-keyword scoring algorithm. When a user submits a question, tokenize it, strip stop words, then score every knowledge base entry by counting matching keywords weighted by specificity. Select the highest-scoring entry above a threshold (e.g., score ≥ 2). When no entry scores above the threshold, return a rich fallback response that: (a) lists 5–8 related topics the student can explore, (b) offers 3–5 suggested follow-up questions formatted as clickable chips in the UI, and (c) opens with an empathetic acknowledgment. Every non-fallback response must open with a varied empathetic phrase (e.g., 'Great question!', 'That's something many students find tricky — let me break it down for you.') and close with a contextual follow-up prompt ('Would you like me to go deeper on any part of this?').",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-32",
+      "summary": "Redesign the CyberMentor response behavior in `frontend/src/pages/CyberMentorPage.tsx` so that every answer follows this structure: (1) Short answer first — a concise 1–3 sentence direct answer, (2) Detailed explanation — full structured body with headings, bullets, code blocks, (3) Code example section when the topic is code-related, (4) Closing follow-up prompt. Format this visually in the chat bubble with a clear 'Quick Answer' section and a collapsible or scrollable 'Full Explanation' section below it. The assistant must use first-person language ('I', 'we') and occasional encouragement phrases ('You're on the right track!', 'Keep going — you're almost there!').",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-33",
+      "summary": "In `frontend/src/pages/CyberMentorPage.tsx`, implement a simulated streaming/typing effect so that CyberMentor responses render progressively character-by-character (or word-by-word) at ~30ms per token, mimicking ChatGPT's response streaming. While the response is streaming, display an animated typing indicator. Add a response cache (using a Map keyed by normalized question text) so that identical or near-identical repeat questions return instantly without re-running the typing animation — instead show a subtle 'Cached response' badge. The initial page-load greeting must render immediately on mount (not after a delay) selected randomly from a pool of at least 10 warm, human-like messages stored in `useCyberMentorKnowledge.ts`.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-34",
+      "summary": "Add an AI Development course track to the platform. In `frontend/src/data/coursesData.ts`, add a sixth course entry for 'AI Development' with a full curriculum covering: Python for AI, Machine Learning fundamentals, Neural Networks, Deep Learning with TensorFlow/PyTorch, Natural Language Processing, LLM architecture and prompt engineering, Computer Vision basics, AI ethics, and deploying AI models. Create at least 6 modules with pre-authored slide content (≥5 slides per module) covering these topics in depth. Add the AI Development course card to `frontend/src/pages/CoursesPage.tsx` with appropriate metadata (duration, modules count, difficulty level). Register the course in the backend data model if needed.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-35",
+      "summary": "Implement a Saved Chats feature for authenticated students. In the backend (`backend/main.mo`), add a `savedChats` data structure per user storing chat sessions with fields: sessionId, title (auto-generated from first message), messages array (role + content + timestamp), and createdAt. Expose query functions `getSavedChats(userId)` and `getChatSession(sessionId)`, and update functions `saveChatSession(...)` and `deleteChatSession(sessionId)`. On the frontend, add a 'Save Chat' button in `CyberMentorPage.tsx` that saves the current conversation to the backend. Add a 'Saved Chats' page/panel (accessible from the user's dashboard or profile sidebar) listing all saved sessions, with the ability to open and review any saved conversation and delete sessions.",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-36",
+      "summary": "Build an Admin Panel page at route `/admin` in the frontend. The admin panel must be accessible only to a designated admin principal (hardcoded or configurable). It must include three sections: (1) Course Management — list all courses with ability to view enrolled student counts and module completion stats; (2) Student Management — list all registered students with username, email, enrolled courses, and ability to view their profile; (3) Certificate Management — list all issued certificates with student name, course, date, certificate ID, and ability to manually issue a certificate to a student for a selected course. Add corresponding backend functions in `backend/main.mo`: `getAllUsers()`, `getAllCertificates()`, `adminIssueCertificate(userId, courseId)`, and `getEnrollmentStats()`, all gated behind an admin authorization check.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-37",
+      "summary": "Build production-level Python FastAPI backend for CyberMentor with POST /mentor/chat endpoint, streaming responses, JWT auth, user isolation, chat memory DB schema, deep research mode flag, Hindi/English language auto-detection, Ollama/local LLM support with fallback API option, and full prompt engineering system",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-38",
+      "summary": "Overhaul the CyberMentor response engine in `frontend/src/hooks/useCyberMentorKnowledge.ts` to implement a full AI personality system. The mentor must act as Teacher + Software Engineer + Research Assistant with a friendly, professional tone. Every response must follow this mandatory structure: (1) Quick Answer — a concise 1–3 sentence direct answer, (2) Deep Explanation — full structured body with headings and bullet points, (3) Real-World Example section, (4) Code Example section (when topic is code-related, using fenced code blocks with language tags), (5) Common Mistakes section, (6) Extra Tips section, (7) Closing follow-up prompt ('Would you like me to go deeper on any part of this?'). Responses must never be short. Every response must open with a varied empathetic phrase chosen randomly from at least 15 options (e.g., 'Great question!', 'That's something many students find tricky — let me break it down for you.', 'You're asking exactly the right thing!'). The engine must use first-person language ('I', 'we') and occasional encouragement ('You're on the right track!', 'Keep going — you're almost there!').",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-39",
+      "summary": "Implement automatic Hindi/English language detection in the CyberMentor response engine (`frontend/src/hooks/useCyberMentorKnowledge.ts`). When a user submits a question, detect whether the input is primarily in Hindi (Devanagari script or Hinglish romanized Hindi keywords) or English. If Hindi is detected, the response must be written in Hindi or Hindi-English mix (Hinglish). If English is detected, respond in English. Add a language detection utility function that checks for Devanagari Unicode characters and common Hindi romanized keywords (kya, kaise, batao, samjhao, mujhe, etc.).",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-40",
+      "summary": "Implement a Deep Research Mode in the CyberMentor frontend response pipeline (`frontend/src/hooks/useCyberMentorKnowledge.ts` and `frontend/src/pages/CyberMentorPage.tsx`). Before generating a response, the engine must visibly simulate these internal reasoning steps shown as a typing/thinking indicator: (1) Analyzing question, (2) Breaking into sub-topics, (3) Searching knowledge base, (4) Thinking step by step, (5) Generating structured answer. Add a toggle button labeled 'Deep Research Mode' in the CyberMentorPage UI. When enabled, the thinking steps are displayed as animated status lines before the response streams in. When disabled, responses stream immediately. The deep research flag must be stored in React state and passed to the response generation function.",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-41",
+      "summary": "Implement a Debug Mode in the CyberMentor response engine. When a user's message contains an error message pattern (keywords: 'error', 'exception', 'TypeError', 'SyntaxError', 'undefined', 'null', 'cannot read', 'is not a function', 'failed', 'bug', 'not working', or contains a stack trace pattern), automatically activate debug mode. In debug mode, the response structure must change to: (1) Error Explanation — what the error means in plain English, (2) Root Cause Analysis — why this error occurs, (3) Step-by-Step Fix — numbered steps to resolve it, (4) Corrected Code — showing the fixed code in a fenced code block, (5) Prevention Tips — how to avoid this error in future. Add a visual 'Debug Mode' badge/indicator in the chat bubble when this mode is active.",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-42",
+      "summary": "Implement a Project Generation Mode in the CyberMentor response engine. When a user's message contains project-request keywords (e.g., 'build a project', 'create a project', 'make an app', 'project idea', 'generate project', 'full stack project', 'portfolio project'), the response must follow this structure: (1) Project Overview — name, description, and tech stack, (2) Folder Structure — shown as a code block with directory tree, (3) Frontend Code — key component/page code snippets, (4) Backend API — endpoint definitions and handler code, (5) Database Schema — table/collection definitions, (6) README Instructions — setup and run steps. Add a visible 'Project Generator' badge on the assistant message bubble when this mode is active.",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-43",
+      "summary": "Massively expand the knowledge base in `frontend/src/hooks/useCyberMentorKnowledge.ts` to cover all six course domains with encyclopedic depth, functioning entirely client-side. The expansion must cover: **Frontend** — HTML5 semantics, CSS3/Flexbox/Grid, JavaScript ES6+, React hooks/state/context/router, TypeScript, Tailwind CSS, responsive design, web accessibility, performance optimization, PWA; **Backend** — Node.js/Express, Python/Django/FastAPI, REST API design, GraphQL, authentication (JWT/OAuth), middleware, error handling, rate limiting; **Full Stack** — MERN/MEAN stacks, deployment (Docker, CI/CD, Nginx), environment variables, monorepo setup, database migrations; **Cyber Security** — OWASP Top 10, XSS/SQLi/CSRF/buffer overflow exploits, penetration testing methodology, Nmap/Metasploit/Burp Suite/Wireshark usage, network security, cryptography (symmetric/asymmetric, hashing), firewall/IDS/IPS; **Ethical Hacking** — reconnaissance, scanning, exploitation, post-exploitation, reporting, social engineering, CTF techniques, Kali Linux tools; **AI Development** — Python for AI, ML fundamentals, neural networks, deep learning with TensorFlow/PyTorch, NLP, LLM architecture, prompt engineering, computer vision, AI ethics, model deployment. Each entry must include: short summary (2–3 sentences), full structured body with headings/bullets/code blocks, empathetic opening phrase, and keyword array for scoring.",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-44",
+      "summary": "Implement a robust conversation memory system in `frontend/src/pages/CyberMentorPage.tsx`. Store the full conversation history in React state as an array of `{role: 'user' | 'assistant', content: string, timestamp: Date}` objects. Pass the last 10 messages as context to the response generation function so the mentor can reference previous questions (e.g., 'As I mentioned earlier...'). Display a message count indicator in the chat header. Add a 'Clear Chat' button that resets the conversation history. Persist the current session's chat history to `sessionStorage` so it survives page refreshes within the same browser session. Show a subtle 'Remembering your conversation context' indicator when the mentor uses history context.",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-45",
+      "summary": "Overhaul the CyberMentor response engine in `frontend/src/hooks/useCyberMentorKnowledge.ts` to implement a full AI personality system acting as Teacher + Software Engineer + Research Assistant. Every response must follow this mandatory 7-part structure: (1) Quick Answer — a concise 1–3 sentence direct answer, (2) Deep Explanation — full structured body with headings and bullet points, (3) Real-World Example section, (4) Code Example section (when topic is code-related, using fenced code blocks with language tags), (5) Common Mistakes section, (6) Extra Tips / Pro Tips section, (7) Closing follow-up prompt ('Would you like me to go deeper on any part of this?'). Responses must never be short. Every response must open with a varied empathetic phrase chosen randomly from at least 15 options (e.g., 'Great question!', 'That's something many students find tricky — let me break it down for you.', 'You're asking exactly the right thing!'). Use first-person language ('I', 'we') and occasional encouragement ('You're on the right track!', 'Keep going — you're almost there!'). The initial page-load greeting must be randomly selected from a pool of at least 10 warm, human-like messages.",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-46",
+      "summary": "Implement automatic Hindi/English/Hinglish language detection in the CyberMentor response engine (`frontend/src/hooks/useCyberMentorKnowledge.ts`). When a user submits a question, detect whether the input contains Devanagari Unicode characters (Hindi script) or common romanized Hindi keywords (kya, kaise, batao, samjhao, mujhe, matlab, sikho, bhai, yaar, etc.). If Hindi or Hinglish is detected, the response must be written in Hindi or Hinglish accordingly. If English is detected, respond in English. Implement a `detectLanguage(input: string): 'hindi' | 'hinglish' | 'english'` utility function and apply it before generating each response.",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-47",
+      "summary": "Implement a Deep Research Mode in `frontend/src/hooks/useCyberMentorKnowledge.ts` and `frontend/src/pages/CyberMentorPage.tsx`. Before generating a response, the engine must visibly simulate these internal reasoning steps shown as animated status lines: (1) 'Analyzing question...', (2) 'Breaking into sub-topics...', (3) 'Searching knowledge base...', (4) 'Thinking step by step...', (5) 'Generating structured answer...'. Add a toggle button labeled 'Deep Research Mode' in the CyberMentorPage UI. When enabled, these animated thinking steps are displayed sequentially before the response streams in. When disabled, responses stream immediately without the thinking animation. The deep research flag must be stored in React state.",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-48",
+      "summary": "Implement a Debug Mode in the CyberMentor response engine. When a user's message contains error/debug pattern keywords (e.g., 'error', 'exception', 'TypeError', 'SyntaxError', 'undefined', 'null', 'cannot read', 'is not a function', 'failed', 'bug', 'not working', or contains a stack trace pattern), automatically activate debug mode. In debug mode, the response structure must change to: (1) Error Explanation — what the error means in plain English, (2) Root Cause Analysis — why this error occurs, (3) Step-by-Step Fix — numbered steps to resolve it, (4) Corrected Code — fixed code in a fenced code block, (5) Prevention Tips — how to avoid this error in future. Add a visible 'Debug Mode' badge/indicator on the assistant message bubble when this mode is active.",
+      "reqIds": [
+        "REQ-40"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-49",
+      "summary": "Implement a Project Generation Mode in the CyberMentor response engine. When a user's message contains project-request keywords (e.g., 'build a project', 'create a project', 'make an app', 'project idea', 'generate project', 'full stack project', 'portfolio project', 'make project'), the response must follow this structure: (1) Project Overview — name, description, and tech stack, (2) Folder Structure — shown as a code block with directory tree, (3) Frontend Code — key component/page code snippets, (4) Backend API — endpoint definitions and handler code, (5) Database Schema — table/collection definitions, (6) README Instructions — setup and run steps, (7) Deployment Steps. Add a visible 'Project Generator' badge on the assistant message bubble when this mode is active.",
+      "reqIds": [
+        "REQ-41"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-50",
+      "summary": "Implement a PPT Notes Mode in the CyberMentor response engine. When a user's message requests notes, PPT, slides, or a summary (keywords: 'notes', 'ppt', 'slides', 'summarize', 'summary', 'bullet points', 'cheat sheet'), the response must be formatted as structured bullet-point notes ready for PPT export. Use clear headings for each section and concise bullet points under each heading. Add a visible 'PPT Notes Mode' badge on the assistant message bubble when this mode is active.",
+      "reqIds": [
+        "REQ-42"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-51",
+      "summary": "Implement a robust conversation memory system in `frontend/src/pages/CyberMentorPage.tsx`. Store the full conversation history in React state as an array of `{role: 'user' | 'assistant', content: string, timestamp: Date}` objects. Pass the last 10 messages as context to the response generation function so the mentor can reference previous questions (e.g., 'As I mentioned earlier...'). Display a message count indicator in the chat header. Add a 'Clear Chat' button that resets the conversation history. Persist the current session's chat history to `sessionStorage` so it survives page refreshes within the same browser session. Show a subtle 'Remembering your conversation context' indicator when the mentor references history context.",
+      "reqIds": [
+        "REQ-43"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-52",
+      "summary": "Massively expand the knowledge base in `frontend/src/hooks/useCyberMentorKnowledge.ts` to cover all six course domains with encyclopedic depth, functioning entirely client-side. The expansion must cover hundreds of topics across: **Frontend** (HTML5 semantics, CSS3/Flexbox/Grid, JavaScript ES6+, React hooks/context/router, TypeScript, Tailwind, responsive design, accessibility, PWA); **Backend** (Node.js/Express, Python/Django/FastAPI, REST/GraphQL, JWT/OAuth, middleware, error handling); **Full Stack** (MERN/MEAN, Docker, CI/CD, Nginx, database migrations, monorepo); **Cyber Security** (OWASP Top 10, XSS/SQLi/CSRF/buffer overflow, penetration testing, Nmap/Metasploit/Burp Suite/Wireshark, cryptography, firewall/IDS/IPS); **Ethical Hacking** (reconnaissance, scanning, exploitation, post-exploitation, reporting, social engineering, CTF, Kali Linux); **AI Development** (Python for AI, ML fundamentals, neural networks, deep learning with TensorFlow/PyTorch, NLP, LLM architecture, prompt engineering, computer vision, AI ethics, model deployment). Each entry must include: a short summary answer (2–3 sentences), a full structured body with headings/bullets/code blocks following the 7-part response format from REQ-37, an empathetic opening phrase, and a keyword array for scoring.",
+      "reqIds": [
+        "REQ-44"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "CyberWorld",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,176 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Upgrade CyberMentor AI personality, response structure, language detection, and all advanced modes",
+  "requirements": [
+    {
+      "id": "REQ-37",
+      "summary": "Overhaul the CyberMentor response engine to implement a full AI personality system with mandatory 7-part response structure, empathetic opening phrases, first-person language, and warm random greetings on page load",
+      "acceptanceCriteria": [
+        "Every CyberMentor response contains all 7 sections: Quick Answer, Deep Explanation, Real-World Example, Code Example (when relevant), Common Mistakes, Extra Tips, and Closing follow-up prompt.",
+        "Responses open with a randomly selected empathetic phrase from a pool of at least 15 options.",
+        "No response is shorter than a multi-section structured answer.",
+        "First-person language ('I', 'we') and encouragement phrases are used throughout.",
+        "On page load, a random warm greeting from a pool of at least 10 messages is displayed immediately."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useCyberMentorKnowledge.ts",
+          "operation": "modify",
+          "description": "Replace the response generation logic with a new personality system that enforces the 7-part response structure: (1) Quick Answer (2–3 sentences), (2) Deep Explanation (structured with headings/bullets), (3) Real-World Example section, (4) Code Example section (when code-related, using fenced code blocks), (5) Common Mistakes section, (6) Extra Tips / Pro Tips section, (7) Closing follow-up prompt ('Would you like me to go deeper on any part of this?'). Add an array of at least 15 empathetic opening phrases (e.g., 'Great question!', 'That's something many students find tricky — let me break it down for you.', 'You're asking exactly the right thing!') and randomly select one to start each response. Use first-person language ('I', 'we') and include encouragement phrases ('You're on the right track!', 'Keep going — you're almost there!'). Create a function `generateStructuredResponse(query: string, knowledgeEntry: any, openingPhrase: string): string` that assembles all 7 parts. Add a pool of at least 10 warm greeting messages and export a `getRandomGreeting(): string` function for initial page load."
+        },
+        {
+          "path": "frontend/src/pages/CyberMentorPage.tsx",
+          "operation": "modify",
+          "description": "Update the initial greeting logic to call the new `getRandomGreeting()` function from useCyberMentorKnowledge.ts on component mount, ensuring a warm random message is displayed immediately when the page loads. Update the message rendering logic to properly display all 7 sections of the new structured response format, ensuring code blocks, headings, and bullet points are rendered correctly via the existing ChatMessage component markdown parser."
+        }
+      ]
+    },
+    {
+      "id": "REQ-38",
+      "summary": "Implement automatic Hindi/English/Hinglish language detection in the CyberMentor response engine using Devanagari Unicode and romanized Hindi keywords",
+      "acceptanceCriteria": [
+        "A `detectLanguage` utility function exists and correctly identifies Hindi (Devanagari), Hinglish (mixed romanized Hindi), and English inputs.",
+        "When a question is typed in Hindi or Hinglish, the CyberMentor response is returned in Hindi or Hinglish respectively.",
+        "When a question is typed in English, the response is in English.",
+        "Language detection runs before every response generation call."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useCyberMentorKnowledge.ts",
+          "operation": "modify",
+          "description": "Add a `detectLanguage(input: string): 'hindi' | 'hinglish' | 'english'` utility function that checks for Devanagari Unicode characters (\\u0900–\\u097F range) to identify Hindi, and checks for romanized Hindi keywords (kya, kaise, batao, samjhao, mujhe, matlab, sikho, bhai, yaar, aapko, mera, tera, hai, hoon, etc.) to identify Hinglish. If neither pattern is detected, return 'english'. Integrate this function into the response generation flow so it runs before generating each response. Update `generateStructuredResponse` to accept a `language` parameter and adjust the response text accordingly: if 'hindi', generate all 7 sections in Hindi; if 'hinglish', use mixed romanized Hindi + English; if 'english', use English. Maintain the same 7-part structure regardless of language. Update the empathetic opening phrases and greeting pools to include Hindi and Hinglish variants."
+        }
+      ]
+    },
+    {
+      "id": "REQ-39",
+      "summary": "Implement a Deep Research Mode with animated thinking steps shown before response streaming, controlled by a toggle button in the CyberMentorPage UI",
+      "acceptanceCriteria": [
+        "A 'Deep Research Mode' toggle button is visible in the CyberMentorPage UI.",
+        "When Deep Research Mode is ON, five sequential animated thinking steps appear before each response streams in.",
+        "When Deep Research Mode is OFF, the response streams immediately without thinking steps.",
+        "The deep research mode state persists in React state for the current session."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/CyberMentorPage.tsx",
+          "operation": "modify",
+          "description": "Add a React state variable `deepResearchMode: boolean` initialized to `false`. Add a toggle button labeled 'Deep Research Mode' in the chat header area (next to or near the existing UI controls) that flips this state on click. When `deepResearchMode` is true and a user submits a message, display five sequential animated thinking steps as separate temporary chat bubbles or status lines before calling the response generation function: (1) 'Analyzing question...', (2) 'Breaking into sub-topics...', (3) 'Searching knowledge base...', (4) 'Thinking step by step...', (5) 'Generating structured answer...'. Show each step for ~500ms with a loading spinner or animated ellipsis. After all steps complete, proceed to stream the actual response. When `deepResearchMode` is false, skip the thinking steps and stream the response immediately. Style the toggle button to clearly indicate its on/off state."
+        }
+      ]
+    },
+    {
+      "id": "REQ-40",
+      "summary": "Implement automatic Debug Mode that detects error keywords and stack traces, then formats responses with a 5-part debug structure and displays a 'Debug Mode' badge",
+      "acceptanceCriteria": [
+        "Debug mode is automatically triggered when a user message contains recognized error keywords or stack trace patterns.",
+        "When debug mode is active, the response strictly follows the 5-part debug structure: Error Explanation, Root Cause Analysis, Step-by-Step Fix, Corrected Code, Prevention Tips.",
+        "A visible 'Debug Mode' badge appears on the assistant chat bubble when debug mode is active.",
+        "Non-error questions do not trigger debug mode."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useCyberMentorKnowledge.ts",
+          "operation": "modify",
+          "description": "Add a `detectDebugMode(input: string): boolean` function that returns true if the input contains error/debug keywords (e.g., 'error', 'exception', 'TypeError', 'SyntaxError', 'undefined', 'null', 'cannot read', 'is not a function', 'failed', 'bug', 'not working') or stack trace patterns (lines starting with 'at ' or containing file paths with line numbers). Create a `generateDebugResponse(query: string, language: string): string` function that produces a 5-part structured response: (1) Error Explanation (what the error means in plain English), (2) Root Cause Analysis (why this error occurs), (3) Step-by-Step Fix (numbered steps to resolve it), (4) Corrected Code (fixed code in a fenced code block), (5) Prevention Tips (how to avoid this error in future). Return an object `{ content: string, mode: 'debug' | 'normal' }` from the response generation function to indicate when debug mode was used."
+        },
+        {
+          "path": "frontend/src/components/ChatMessage.tsx",
+          "operation": "modify",
+          "description": "Accept an optional `mode?: 'debug' | 'project' | 'ppt'` prop. When `mode` is 'debug', display a visible 'Debug Mode' badge (a small pill/tag with an icon) at the top-right corner of the assistant message bubble. Style the badge with a distinct color (e.g., orange or red) to differentiate it from normal messages. Ensure the badge does not interfere with message content readability."
+        },
+        {
+          "path": "frontend/src/pages/CyberMentorPage.tsx",
+          "operation": "modify",
+          "description": "Update the message submission logic to pass the detected mode (from useCyberMentorKnowledge.ts response object) to the ChatMessage component when rendering assistant messages. Store the mode along with each message in the conversation history state so the badge persists correctly on scroll/re-render."
+        }
+      ]
+    },
+    {
+      "id": "REQ-41",
+      "summary": "Implement automatic Project Generation Mode that detects project-request keywords and formats responses with a 7-part project structure, displaying a 'Project Generator' badge",
+      "acceptanceCriteria": [
+        "Project generation mode is automatically triggered when a user message contains recognized project-request keywords.",
+        "When project mode is active, the response follows the 7-part structure: Project Overview, Folder Structure, Frontend Code, Backend API, Database Schema, README Instructions, Deployment Steps.",
+        "A visible 'Project Generator' badge appears on the assistant chat bubble when this mode is active.",
+        "Non-project questions do not trigger project generation mode."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useCyberMentorKnowledge.ts",
+          "operation": "modify",
+          "description": "Add a `detectProjectMode(input: string): boolean` function that returns true if the input contains project-request keywords (e.g., 'build a project', 'create a project', 'make an app', 'project idea', 'generate project', 'full stack project', 'portfolio project', 'make project'). Create a `generateProjectResponse(query: string, language: string): string` function that produces a 7-part structured response: (1) Project Overview (name, description, tech stack), (2) Folder Structure (shown as a code block with directory tree), (3) Frontend Code (key component/page code snippets), (4) Backend API (endpoint definitions and handler code), (5) Database Schema (table/collection definitions), (6) README Instructions (setup and run steps), (7) Deployment Steps. Update the response generation function to return `{ content: string, mode: 'project' | 'debug' | 'ppt' | 'normal' }` to indicate when project mode was used."
+        },
+        {
+          "path": "frontend/src/components/ChatMessage.tsx",
+          "operation": "modify",
+          "description": "When `mode` is 'project', display a visible 'Project Generator' badge (a small pill/tag with an icon) at the top-right corner of the assistant message bubble. Style the badge with a distinct color (e.g., blue or purple) to differentiate it from normal and debug mode messages."
+        }
+      ]
+    },
+    {
+      "id": "REQ-42",
+      "summary": "Implement automatic PPT Notes Mode that detects notes/slides request keywords and formats responses as structured bullet-point notes, displaying a 'PPT Notes Mode' badge",
+      "acceptanceCriteria": [
+        "PPT Notes Mode is automatically triggered when a user message contains recognized notes/PPT request keywords.",
+        "When PPT Notes Mode is active, the response is formatted as structured bullet-point notes with clear section headings.",
+        "A visible 'PPT Notes Mode' badge appears on the assistant chat bubble when this mode is active."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useCyberMentorKnowledge.ts",
+          "operation": "modify",
+          "description": "Add a `detectPPTMode(input: string): boolean` function that returns true if the input contains notes/PPT request keywords (e.g., 'notes', 'ppt', 'slides', 'summarize', 'summary', 'bullet points', 'cheat sheet'). Create a `generatePPTResponse(query: string, language: string): string` function that produces structured bullet-point notes ready for PPT export, using clear headings (##) for each section and concise bullet points (-) under each heading. Update the response generation function to check for PPT mode and return `{ content: string, mode: 'ppt' | 'project' | 'debug' | 'normal' }` accordingly."
+        },
+        {
+          "path": "frontend/src/components/ChatMessage.tsx",
+          "operation": "modify",
+          "description": "When `mode` is 'ppt', display a visible 'PPT Notes Mode' badge (a small pill/tag with an icon) at the top-right corner of the assistant message bubble. Style the badge with a distinct color (e.g., green or teal) to differentiate it from other modes."
+        }
+      ]
+    },
+    {
+      "id": "REQ-43",
+      "summary": "Implement a robust conversation memory system that stores full chat history in React state, persists to sessionStorage, passes last 10 messages as context, and displays message count and 'Clear Chat' button",
+      "acceptanceCriteria": [
+        "Conversation history is stored in React state as typed message objects with role, content, and timestamp.",
+        "The last 10 messages are passed as context to the response generation function.",
+        "A message count indicator is visible in the chat header.",
+        "A 'Clear Chat' button resets the conversation history.",
+        "Chat history is persisted to sessionStorage and survives page refreshes.",
+        "A subtle context indicator appears when the mentor references conversation history."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/CyberMentorPage.tsx",
+          "operation": "modify",
+          "description": "Replace the existing message history logic with a typed state `messages: Array<{role: 'user' | 'assistant', content: string, timestamp: Date, mode?: string}>`. On component mount, load messages from `sessionStorage.getItem('cybermentor-chat-history')` and parse them, restoring the conversation state. After each message is added (user or assistant), serialize the messages array and save to `sessionStorage.setItem('cybermentor-chat-history', JSON.stringify(messages))`. When generating a response, pass the last 10 messages as a context array to the response generation hook. Add a message count indicator in the chat header (e.g., '23 messages') that updates dynamically. Add a 'Clear Chat' button next to the message count that clears the messages state and removes the sessionStorage key. When the mentor references previous context (detected by keywords like 'as I mentioned', 'earlier', 'you asked'), display a subtle 'Remembering your conversation context' indicator near the assistant message bubble (e.g., a small icon or tooltip)."
+        },
+        {
+          "path": "frontend/src/hooks/useCyberMentorKnowledge.ts",
+          "operation": "modify",
+          "description": "Update the response generation function signature to accept an optional `conversationContext: Array<{role: 'user' | 'assistant', content: string}>` parameter. When generating responses, if the context array is non-empty, prepend a hidden context summary to the prompt or use the context to detect if the user is following up on a previous topic. If the generated response includes phrases like 'As I mentioned earlier' or 'Building on what we discussed', set a flag `usedContext: true` in the return object so the UI can display the context indicator."
+        }
+      ]
+    },
+    {
+      "id": "REQ-44",
+      "summary": "Massively expand the client-side knowledge base in useCyberMentorKnowledge.ts to cover hundreds of topics across all six course domains with encyclopedic depth, following the 7-part response format",
+      "acceptanceCriteria": [
+        "The knowledge base contains entries spanning all six domains: Frontend, Backend, Full Stack, Cyber Security, Ethical Hacking, AI Development.",
+        "Each knowledge entry includes a short summary, full structured 7-part body, empathetic opening phrase, and keyword array.",
+        "Topics include programming languages, frameworks, security exploits, networking, Linux, cryptography, ML/AI, DevOps, and career guidance.",
+        "The knowledge base functions entirely client-side with no external API calls.",
+        "The multi-keyword scoring algorithm correctly matches natural language questions to the most relevant entry."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useCyberMentorKnowledge.ts",
+          "operation": "modify",
+          "description": "Expand the `knowledgeBase` array to include hundreds of entries covering all six domains: **Frontend** (HTML5 semantics, accessibility, semantic tags, forms, canvas, CSS3 animations, Flexbox, Grid, media queries, BEM, SASS, responsive design, JavaScript ES6+ features like async/await, promises, destructuring, spread operator, modules, React hooks including useState, useEffect, useContext, useReducer, useMemo, useCallback, React Router, component lifecycle, TypeScript types, interfaces, generics, union types, Tailwind utility classes, dark mode, PWA manifest, service workers); **Backend** (Node.js event loop, Express routing, middleware, error handling, Python syntax, Django ORM, FastAPI decorators, REST principles, HTTP methods, status codes, GraphQL queries/mutations, JWT structure, OAuth2 flows, bcrypt password hashing, CORS, rate limiting); **Full Stack** (MERN stack setup, MEAN stack, Docker containers, Dockerfile, docker-compose, CI/CD pipelines, GitHub Actions, Jenkins, Nginx reverse proxy, load balancing, database migrations with Prisma, monorepo tools like Lerna); **Cyber Security** (OWASP Top 10 vulnerabilities including SQL injection, XSS types (reflected, stored, DOM-based), CSRF tokens, buffer overflow exploitation, input validation, secure coding practices, penetration testing phases, reconnaissance tools like Nmap, Metasploit modules, Burp Suite features, Wireshark packet analysis, cryptography algorithms (AES, RSA, SHA), public/private key pairs, SSL/TLS handshake, firewall rules, IDS vs IPS, network segmentation); **Ethical Hacking** (reconnaissance techniques, passive vs active recon, scanning with Nmap, enumeration, exploitation frameworks, privilege escalation, lateral movement, post-exploitation persistence, reporting vulnerabilities, social engineering tactics, phishing, CTF challenge types, Kali Linux tools, metasploit payloads, reverse shells, password cracking with John the Ripper/Hashcat); **AI Development** (Python for AI basics, NumPy arrays, Pandas DataFrames, Matplotlib plotting, machine learning workflow, supervised vs unsupervised learning, neural network architecture, activation functions (ReLU, sigmoid, tanh), backpropagation, gradient descent, TensorFlow Keras API, PyTorch tensors, NLP preprocessing, tokenization, word embeddings, transformer architecture, attention mechanism, LLM fine-tuning, prompt engineering techniques, computer vision with OpenCV, CNN architecture, image classification, object detection with YOLO, AI ethics and bias, model deployment with Flask/FastAPI, Docker for ML models). Each entry must include: (1) a `keywords` array with 10–30 relevant terms, (2) a `summary` string (2–3 sentences), (3) a `fullResponse` string following the 7-part structure from REQ-37 with markdown formatting (headings, bullets, code blocks), (4) an `empatheticOpening` string randomly selected from the phrase pool. Ensure the scoring algorithm uses fuzzy matching and counts multiple keyword matches to rank entries accurately."
+        }
+      ]
+    }
+  ]
+}
